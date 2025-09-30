@@ -1,0 +1,65 @@
+/* Styling for the Home component */
+.home-container {
+  padding: 40px;
+  text-align: center;
+  /* background-color:  #1a1a1a; */
+
+}
+
+.heading {
+  font-size: 2.5rem;
+  color: #000000;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+.task-list {
+  list-style-type: none; /* Remove default list style */
+  padding: 0;
+  margin: 0;
+}
+
+.task-list li {
+  margin: 15px 0; /* Add space between list items */
+}
+
+.task-link {
+  text-decoration: none; /* Remove underline */
+  display: inline-block; /* Make the link behave like a button */
+  padding: 12px 24px;
+  background-color: #07633b; /* Blue background */
+  color: #fff; /* White text */
+  border-radius: 5px;
+  font-size: 1.2rem; 
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover and click effects */
+}
+
+.task-link:hover {
+  background-color: #2c865f; /* Darker blue on hover */
+  transform: translateY(-2px); /* Lift effect on hover */
+}
+
+.task-link:focus {
+  outline: none; /* Remove default focus outline */
+  box-shadow: 0 0 0 2px rgba(8, 173, 116, 0.5); /* Optional focus styling */
+}
+
+/* Heading Styles */
+h1 {
+  font-size: 2em;
+  line-height: 1.1;
+  text-align: center; /* Center heading */
+}
+
+
+@media (max-width: 600px) {
+  .heading {
+    font-size: 2rem; /* Smaller heading on mobile */
+  }
+
+  .task-link {
+    font-size: 1rem; /* Adjust font size on mobile */
+    padding: 10px 20px; /* Smaller button padding on mobile */
+  }
+}

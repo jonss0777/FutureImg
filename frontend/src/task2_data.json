@@ -1,0 +1,49 @@
+{
+    "task": 2,
+    "description": "Select the images on the right that align the most with the centered image in the left.",
+    "data": [
+        {
+            "id": 0,
+            "views": {
+                "center": {
+                    "id": 0,
+                    "img_url": "https://twoplaidaprons.com/wp-content/uploads/2020/05/Chinese-pork-dumplings-the-filling-before-mixing.jpg",
+                    "view": "center",
+                    "label": "real"
+                },
+                "nassal": [
+                    {
+                        "id": 0,
+                        "parent_id": 0,
+                        "img_url": "https://twoplaidaprons.com/wp-content/uploads/2020/05/Chinese-pork-dumplings-picking-up-a-dumpling-with-chopsticks-1109x1536.jpg",
+                        "view": "nassal",
+                        "label": "fake"
+                    },
+                    {
+                        "id": 0,
+                        "img_url": "https://twoplaidaprons.com/wp-content/uploads/2020/05/Chinese-pork-dumplings-picking-up-a-dumpling-with-chopsticks-1109x1536.jpg",
+                        "parent_id": 3,
+                        "view": "nassal",
+                        "label": "fake"
+                    }
+                ],
+                "temporal": [
+                    {
+                        "id": 0,
+                        "img_url": "https://twoplaidaprons.com/wp-content/uploads/2020/05/Chinese-pork-dumplings-picking-up-a-dumpling-with-chopsticks-1109x1536.jpg",
+                        "parent_id": 0,
+                        "view": "temporal",
+                        "label": "fake"
+                    },
+                    {
+                        "id": 0,
+                        "img_url": "https://twoplaidaprons.com/wp-content/uploads/2020/05/Chinese-pork-dumplings-picking-up-a-dumpling-with-chopsticks-1109x1536.jpg",
+                        "parent_id": 2,
+                        "view": "nassal",
+                        "label": "fake"
+                    }
+                ]
+            }
+        }
+    ]
+}

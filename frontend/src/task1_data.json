@@ -1,0 +1,30 @@
+{
+    "task": 1,
+    "description":  "Label the image real or fake.",
+    "data": [
+    {
+        "id": 0,
+        "img_url": "https://twoplaidaprons.com/wp-content/uploads/2020/05/Chinese-pork-dumplings-picking-up-a-dumpling-with-chopsticks-1109x1536.jpg",
+        "view":"nassal",
+        "label": "real"
+    },
+    {
+        "id": 3,
+        "img_url": "https://twoplaidaprons.com/wp-content/uploads/2020/05/Chinese-pork-dumplings-the-filling-before-mixing.jpg",
+        "view":"nassal",
+        "label": "real"
+    },
+    {
+        "id": 2,
+        "img_url": "https://twoplaidaprons.com/wp-content/uploads/2020/05/Chinese-pork-dumplings-picking-up-a-dumpling-with-chopsticks-1109x1536.jpg",
+        "view":"nassal",
+        "label": "fake"
+    },
+    {
+        "id": 4,
+        "img_url": "https://twoplaidaprons.com/wp-content/uploads/2020/05/Chinese-pork-dumplings-picking-up-a-dumpling-with-chopsticks-1109x1536.jpg",
+        "view":"temporal",
+        "label": "fake"
+    }
+    ]
+}
