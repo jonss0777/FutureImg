@@ -1,56 +1,118 @@
 import { BrowserRouter, Routes, Route, Link, Outlet } from 'react-router-dom';
 import { useState } from 'react';
 import jsonData from "../task3_data.json";
+import './Task3.css';
 
 export function Instructions_Task3() {
 
     return (
         <>
-            <h3>{jsonData.description} </h3>
+            <h3>Instructions: </h3>
+            <p >{jsonData.description}</p>
+            <Link  style={{ backgroundColor: "black", borderRadius: 20, padding: 15, marginBottom: 10 }} to="/task3/form">Continue</Link>
+
         </>
     )
 }
 
 export function Form_Task3() {
-    const [input, setInput] = useState({});
+    const [userAnswers, setUserAnswers] = useState([]);
     const [data, setData] = useState(jsonData.data);
     const [index, setIndex] = useState();
 
-    const handleChange = () => {
+
+    {/* Add item to userAnswers*/ }
+    const addAnswer = (newUserAnswer) => {
+        setUserAnswers([...items, newUserAnswer])
+    }
+
+    {/* Remove item by id from userAnswers*/ }
+    const removeAnswer = (idToRemoveUserAnswer) => {
+        setUserAnswers(userAnswers.filter((item) => item.id !== idToRemoveUserAnswer));
+    }
+
+    {/* Update item by id frp, userAnswers*/ }
+    const updateAnswer = (idToUpdate, newObj) => {
+        setUserAnswers(prevUserAnswers =>
+            prevUserAnswers.map(item =>
+                item.id === idToUpdate
+                    ? { ...item, obj: newObj }
+                    : item
+            )
+        );
+    };
+
+
+    // Handle options change
+    const handleChange = (event) => {
+        console.log(event);
+        event.preventDefault();
 
     }
 
-    const handleSubmit = () => {
+    // Handle Next and Previous navigation
+    const handleNavigation = (direction) => {
+        setIndex(prevIndex => {
+            const newIndex = prevIndex + direction;
+            if (newIndex < 0) return 0;
+            if (newIndex >= data.length) return data.length - 1;
+            return newIndex;
+        });
+    };
 
+
+    // Handle submit
+    const handleSubmit = (event) => {
+        console.log(event);
+        event.preventDefault();
     }
-
 
     return (
         <>
-            <div>
-                <img src={jsonData.data[index]} widht={500} height={500} id="center_view_image"/>
+            <div div className="task-container">
+                <div className="image-container">
+                    <img src={data[index]} widht={500} height={500} id="nassal_view_image" />
+                    <img src={data[index]} widht={500} height={500} id="temporal_view_image" />
+                </div>
 
-                <img src={jsonData.data[index]} widht={500} height={500} id="center_view_image"/>
+                <form onSubmit={handleSubmit}>
+
+                    <p>Zone</p>
+                    <select value={userAnswers[index]?.value} onChange={handleChange}>
+                        <option value="one">1</option>
+                        <option value="two">2</option>
+                        <option value="three">3</option>
+                    </select>
+
+                    <p>Stage</p>
+                    <select value={userAnswers[index]?.value} onChange={handleChange}>
+                        <option value="one">1</option>
+                        <option value="two">2</option>
+                        <option value="three">3</option>
+                    </select>
+                    <br />
+
+                    {/* Navigation Buttons */}
+                    <div className="navigation-buttons">
+                        <button type="button" onClick={() => handleNavigation(-1)} disabled={index === 0}>
+                            Previous
+                        </button>
+                        <button type="button" onClick={() => handleNavigation(1)} disabled={index === data.length - 1}>
+                            Next
+                        </button>
+                    </div>
+
+                    {/* Submit Button */}
+                    <button type="submit" disabled={userAnswers.length === data.length}>
+                        Submit
+                    </button>
+
+                </form>
             </div>
 
-            <form onSubmit={() => { }}>
+              {/*Display when task is completed*/}
+            <Link style={{ backgroundColor: "black", borderRadius: 20, padding: 15, marginBottom: 10 }} to="/">Return Home</Link>
 
-                <p>Zone</p>
-                <select value={input} onChange={handleChange}>
-                    <option value="one">1</option>
-                    <option value="two">2</option>
-                    <option value="three">3</option>
-                </select>
-
-                <p>Stage</p>
-                <select value={input} onChange={handleChange}>
-                    <option value="one">1</option>
-                    <option value="two">2</option>
-                    <option value="three">3</option>
-                </select>
-                <br />
-                <button type="submit">Submit</button>
-            </form>
         </>
     )
 }
@@ -63,17 +125,15 @@ Display to the user 2 images at a time and allow them to select the zone and sta
 */
 
 export default function Task3() {
-    const [data, updateData] = useState()
-    const [count, updateCount] = useState()
+    const [startedForm, setStartedForm] = useState(false);
+    
+    const handleStart = () =>{
+        setStartedForm(!startedForm)
+    }
+
     return (
         <>
-            <h1>Task3</h1>
-            <Outlet />
-            <Link style={{backgroundColor: "black", borderRadius: 20, padding: 15, marginBottom: 10}}  to="/task3/instructions">Instructions</Link>
-        <Link style={{backgroundColor: "black", borderRadius: 20, padding: 15, marginBottom: 10}}  to="/task3/form">Form</Link>
-         
-            {/*Display when task is completed*/}
-            <Link style={{backgroundColor: "black", borderRadius: 20, padding: 15, marginBottom: 10}} to="/">Return Home</Link>
+            <Outlet />           
         </>
 
     )

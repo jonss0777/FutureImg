@@ -11,57 +11,61 @@ import Login from './components/Login'
 import Register from './components/Register'
 
 function App() {
-    const [activeTab, setActiveTab] = useState('home');  // Default tab is 'home'
+  const [activeTab, setActiveTab] = useState('home');  // Default tab is 'home'
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
   };
-    
+
 
   return (
     <BrowserRouter>
       <nav>
         <div className="left">
-        <Link
-          to="/"
-          className={activeTab === 'home' ? 'active' : ''}
-          onClick={() => handleTabClick('home')}
-        >
-          Home
-        </Link>
-      </div>
-      <div className="right">
-        <Link
-          to="/login"
-          className={activeTab === 'login' ? 'active' : ''}
-          onClick={() => handleTabClick('login')}
-        >
-          Login
-        </Link>
-        <Link
-          to="/register"
-          className={activeTab === 'register' ? 'active' : ''}
-          onClick={() => handleTabClick('register')}
-        >
-          Register
-        </Link>
-      </div>
+          <Link
+            to="/"
+            className={activeTab === 'home' ? 'active' : ''}
+            onClick={() => handleTabClick('home')}
+          >
+            Home
+          </Link>
+        </div>
+        <div className="right">
+          <Link
+            to="/login"
+            className={activeTab === 'login' ? 'active' : ''}
+            onClick={() => handleTabClick('login')}
+          >
+            Login
+          </Link>
+          <Link
+            to="/register"
+            className={activeTab === 'register' ? 'active' : ''}
+            onClick={() => handleTabClick('register')}
+          >
+            Register
+          </Link>
+        </div>
       </nav>
       <Routes>
 
         <Route path="/" element={<Home />}></Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/register" element={<Register />}></Route>
+
         <Route path="/task1" element={<Task1 />}>
           <Route path="instructions" element={<Instructions_Task1 />}></Route>
           <Route path="form" element={<Form_Task1 />}></Route>
+
         </Route>
         <Route path="/task2" element={<Task2 />}>
-          <Route path="instructions" element={<Instructions_Task2 />}></Route>
+          <Route path="instructions" element={<Instructions_Task2 />}> </Route>
           <Route path="form" element={<Form_Task2 />}></Route>
+
         </Route>
         <Route path="/task3" element={<Task3 />}>
-          <Route path="instructions" element={<Instructions_Task3 />}></Route>
+          <Route path="instructions" element={<Instructions_Task3 />}> </Route>
           <Route path="form" element={<Form_Task3 />}></Route>
+
         </Route>
       </Routes>
     </BrowserRouter>

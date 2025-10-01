@@ -1,0 +1,47 @@
+
+
+.task-container{
+    display: flex;
+    width: 100%;
+
+}
+
+.image-container{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+
+}
+
+.left-image-container{
+    display: flex;
+}
+
+.right-image-container{
+    display: flex;
+    flex-direction: column;
+
+}
+
+.image-row{
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px
+}
+
+.checkbox-container{
+    
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.navigation-buttons {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+  gap: 10px;
+}
+

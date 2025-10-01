@@ -11,13 +11,13 @@ export default function Home(){
       <h1 className="heading">Diagnosability Validation</h1>
       <ol className="task-list">
         <li>
-          <Link className="task-link" to="task1">Start Task 1</Link>
+          <Link className="task-link" to="task1/instructions">Start Task 1</Link>
         </li>
         <li>
-          <Link className="task-link" to="task2">Start Task 2</Link>
+          <Link className="task-link" to="task2/instructions">Start Task 2</Link>
         </li>
         <li>
-          <Link className="task-link" to="task3">Start Task 3</Link>
+          <Link className="task-link" to="task3/instructions">Start Task 3</Link>
         </li>
       </ol>
     </div>

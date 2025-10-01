@@ -1,82 +1,133 @@
 import { BrowserRouter, Routes, Route, Link, Outlet } from 'react-router-dom';
 import { useState } from 'react';
 import jsonData from "../task1_data.json";
-
+import './Task1.css';
 
 export function Instructions_Task1() {
     return (
         <>
-            <h3 >{jsonData.description}</h3>
+            <h3>Instructions: </h3>
+            <p >{jsonData.description}</p>
+            <Link style={{ backgroundColor: "black", borderRadius: 20, padding: 15, marginBottom: 10 }} to="/task1/form">Continue</Link>
         </>
     )
 }
 
 export function Form_Task1() {
-    // Initialize selected answers as an empty object
-    const [selectedAnswers, setSelectedAnswers] = useState({});
-    const [data, setData] = useState(jsonData.data);  // Assuming data is a list of images
-    const [count, setCount] = useState(0);
+    const [userAnswers, setUserAnswers] = useState([]);
+    const [data, setData] = useState(jsonData.data);
+    const [index, setIndex] = useState(0);
+    const [pressSubmit, setPressSumbmit] = useState(false);
+
+
+    {/* Add item to userAnswers*/ }
+    const addAnswer = (newUserAnswer) => {
+        setUserAnswers([...userAnswers, newUserAnswer])
+    }
+
+    {/* Remove item by id from userAnswers*/ }
+    const removeAnswer = (idToRemoveUserAnswer) => {
+        setUserAnswers(userAnswers.filter((item) => item.id !== idToRemoveUserAnswer));
+    }
+
+    {/* Update item by id frp, userAnswers*/ }
+    const updateAnswer = (idToUpdate, answer) => {
+
+        setUserAnswers(prevUserAnswers =>
+            prevUserAnswers.map(item =>
+                item.id === idToUpdate
+                    ? { ...item, choice: answer }
+                    : item
+            )
+        );
+    };
 
     // Handle radio button change
-    const handleChange = (event, imageId) => {
+    const handleChange = (event, groupId) => {
         const value = event.target.value;
-        setSelectedAnswers(prevState => ({
-            ...prevState,
-            [imageId]: value,  // Set the answer for the specific image
-        }));
+        // Check if answerId already exists
+        if (!userAnswers.find(answer => answer.id === groupId)) {
+            addAnswer({ id: groupId, choice: value })
+        }
+        else {
+            //console.log(userAnswers);
+            updateAnswer(groupId, value)
+        }
     };
 
     // Handle form submission
     const handleSubmit = async (event) => {
+        console.log("Submit form")
+        console.log("Answers:")
+        console.log(userAnswers)
+
         event.preventDefault();
-        
+
         // Create a payload of selected answers
-        const answers = Object.keys(selectedAnswers).map(imageId => ({
-            imageId: imageId,
-            answer: selectedAnswers[imageId],
-        }));
+        // const answers = Object.keys(selectedAnswers).map(imageId => ({
+        //     imageId: imageId,
+        //     answer: selectedAnswers[imageId],
+        // }));
 
         // API call to submit answers (replace with your API call)
-        try {
-            const response = await fetch('https://api.example.com/save-answers', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(answers),
-            });
+        // try {
+        //     const response = await fetch('https://api.example.com/save-answers', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify(answers),
+        //     });
 
-            if (response.ok) {
-                console.log('Responses submitted successfully');
-            } else {
-                console.log('Failed to submit responses');
-            }
-        } catch (error) {
-            console.error('Error submitting responses:', error);
-        }
+        //     if (response.ok) {
+        //         console.log('Responses submitted successfully');
+        //     } else {
+        //         console.log('Failed to submit responses');
+        //     }
+        // } catch (error) {
+        //     console.error('Error submitting responses:', error);
+        // }
+    };
+
+
+    // Handle Next and Previous navigation
+    const handleNavigation = (direction) => {
+        //console.log("userAnswers: ", userAnswers);
+        setIndex(prevIndex => {
+            const newIndex = prevIndex + direction;
+            if (newIndex < 0) return 0;
+            if (newIndex >= data.length) return data.length - 1;
+            return newIndex;
+        });
     };
 
     return (
-        <div id="task1-container">
-            {/* Render all images and associated radio buttons */}
-            {data.map((image, index) => (
-                <div key={image.id} className="task-image-section">
+        <>
+
+            <div className="task-container">
+                <div className="image-container">
+                    {/* <div className=""> */}
                     <img
-                        id={`task1-image-${image.id}`}
-                        src={image.img_url}
-                        alt={`Image ${image.id}`}
+                        src={data[index].img_url}
+                        alt={`Group ${index} image`}
                         width={500}
                         height={500}
+                        className="group_image"
                     />
+                    {/* </div> */}
+                </div>
+
+                {/* Form with Radio buttons */}
+                <div className='form-container'>
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
                             <label>
                                 <input
                                     type="radio"
-                                    name={`image-${image.id}`}
-                                    value="true"
-                                    checked={selectedAnswers[image.id] === 'true'}
-                                    onChange={(e) => handleChange(e, image.id)}
+                                    name={`group-${index}`}
+                                    value="T"
+                                    checked={userAnswers[index]?.choice === 'T'}
+                                    onChange={(e) => handleChange(e, index)}
                                 /> True
                             </label>
                         </div>
@@ -84,57 +135,67 @@ export function Form_Task1() {
                             <label>
                                 <input
                                     type="radio"
-                                    name={`image-${image.id}`}
-                                    value="false"
-                                    checked={selectedAnswers[image.id] === 'false'}
-                                    onChange={(e) => handleChange(e, image.id)}
+                                    name={`group-${index}`}
+                                    value="F"
+                                    checked={userAnswers[index]?.choice === 'F'}
+                                    onChange={(e) => handleChange(e, index)}
                                 /> False
                             </label>
                         </div>
-                    </form>
-                </div>
-            ))}
 
-            {/* Submit button for the entire form */}
-            <button type="submit" onClick={handleSubmit} className="task-submit-btn">
-                Submit All Answers
-            </button>
-        </div>
+                        {/* Navigation Buttons */}
+                        <div className="navigation-buttons">
+                            <button type="button" onClick={() => handleNavigation(-1)} disabled={index === 0}>
+                                Previous
+                            </button>
+                            <button type="button" onClick={() => handleNavigation(1)} disabled={index === data.length - 1}>
+                                Next
+                            </button>
+                        </div>
+
+                        {/* Submit Button */}
+                        <button onClick={ () => {setPressSumbmit(true);} } className="task-submit-button"
+                            type="submit"
+                            disabled={userAnswers.length !== data.length}
+                            style={{
+                                backgroundColor: userAnswers.length !== data.length ? 'grey' : 'green',
+                                color: 'white',
+                                border: 'none',
+                                padding: '10px 20px',
+                                cursor: userAnswers.length === data.length ? 'not-allowed' : 'pointer',
+                                borderRadius: '5px',
+                                marginTop: '5px',
+                                marginBottom: '5px'
+                            }}
+                        >
+                            Submit
+                        </button>
+                    </form>
+
+                    {pressSubmit ?
+                        <Link style={{ backgroundColor: "black", borderRadius: 20, padding: 15, marginBottom: 10 }} to="/task2">Go to next task</Link>
+                        :
+                        <></>}
+                </div>
+
+            </div>
+        </>
     );
 }
 
 
+
 /*
-
-Design a form to display 200 images. Allow the user to select if they believe the image is real or fake.
-
+*
+* Design a form to display 200 images. Allow the user to select if they believe the image is real or fake.
+*
 */
 
-
-
 export default function Task1() {
-    const [data, updateData] = useState()
-    const [count, updateCount] = useState()
 
     return (
         <>
-            <h1>Task 1</h1>
-
             <Outlet />
-    
-          
-            <Link  style={{backgroundColor: "black", borderRadius: 20, padding: 15, marginBottom: 10}} to="/task1/instructions">Instructions</Link>
-              <Link style={{backgroundColor: "black", borderRadius: 20, padding: 15, marginBottom: 10}} to="/task1/form">Form</Link>
-              {/*Display when task is completed*/}
-            <Link style={{backgroundColor: "black", borderRadius: 20, padding: 15, marginBottom: 10}} to="/task2">Go to next task</Link>
-           
-           
-            <Link style={{backgroundColor: "black", borderRadius: 20, padding: 15}}  to="/">Return Home</Link>
         </>
-
     )
 }
-
-
-
-
