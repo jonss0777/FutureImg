@@ -1,0 +1,19 @@
+
+
+.image-container{
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    width: 100%;
+    
+}
+
+.form-container{
+    
+  width:500px
+
+}
+
+/* label{
+    justify-content: center;
+} */

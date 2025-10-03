@@ -8,7 +8,7 @@
                 "center": {
                     "id": 0,
                     "img_url": "https://twoplaidaprons.com/wp-content/uploads/2020/05/Chinese-pork-dumplings-the-filling-before-mixing.jpg",
-                    "view": "center",
+                    "view": "Center",
                     "label": "real"
                 },
                 "nassal": [
@@ -16,14 +16,14 @@
                         "id": 0,
                         "parent_id": 0,
                         "img_url": "https://twoplaidaprons.com/wp-content/uploads/2020/05/Chinese-pork-dumplings-picking-up-a-dumpling-with-chopsticks-1109x1536.jpg",
-                        "view": "nassal",
+                        "view": "Nasal",
                         "label": "fake"
                     },
                     {
                         "id": 0,
                         "img_url": "https://twoplaidaprons.com/wp-content/uploads/2020/05/Chinese-pork-dumplings-picking-up-a-dumpling-with-chopsticks-1109x1536.jpg",
                         "parent_id": 3,
-                        "view": "nassal",
+                        "view": "Nasal",
                         "label": "fake"
                     }
                 ],
@@ -32,14 +32,14 @@
                         "id": 0,
                         "img_url": "https://twoplaidaprons.com/wp-content/uploads/2020/05/Chinese-pork-dumplings-picking-up-a-dumpling-with-chopsticks-1109x1536.jpg",
                         "parent_id": 0,
-                        "view": "temporal",
+                        "view": "Temporal",
                         "label": "fake"
                     },
                     {
                         "id": 0,
                         "img_url": "https://twoplaidaprons.com/wp-content/uploads/2020/05/Chinese-pork-dumplings-picking-up-a-dumpling-with-chopsticks-1109x1536.jpg",
                         "parent_id": 2,
-                        "view": "nassal",
+                        "view": "Nasal",
                         "label": "fake"
                     }
                 ]
@@ -51,7 +51,7 @@
                 "center": {
                     "id": 0,
                     "img_url": "https://twoplaidaprons.com/wp-content/uploads/2020/05/Chinese-pork-dumplings-the-filling-before-mixing.jpg",
-                    "view": "center",
+                    "view": "Center",
                     "label": "real"
                 },
                 "nassal": [
@@ -59,14 +59,14 @@
                         "id": 0,
                         "parent_id": 0,
                         "img_url": "https://twoplaidaprons.com/wp-content/uploads/2020/05/Chinese-pork-dumplings-picking-up-a-dumpling-with-chopsticks-1109x1536.jpg",
-                        "view": "nassal",
+                        "view": "Nasal",
                         "label": "fake"
                     },
                     {
                         "id": 0,
                         "img_url": "https://twoplaidaprons.com/wp-content/uploads/2020/05/Chinese-pork-dumplings-picking-up-a-dumpling-with-chopsticks-1109x1536.jpg",
                         "parent_id": 3,
-                        "view": "nassal",
+                        "view": "Nasal",
                         "label": "fake"
                     }
                 ],
@@ -75,14 +75,14 @@
                         "id": 0,
                         "img_url": "https://twoplaidaprons.com/wp-content/uploads/2020/05/Chinese-pork-dumplings-picking-up-a-dumpling-with-chopsticks-1109x1536.jpg",
                         "parent_id": 0,
-                        "view": "temporal",
+                        "view": "Temporal",
                         "label": "fake"
                     },
                     {
                         "id": 0,
                         "img_url": "https://twoplaidaprons.com/wp-content/uploads/2020/05/Chinese-pork-dumplings-picking-up-a-dumpling-with-chopsticks-1109x1536.jpg",
                         "parent_id": 2,
-                        "view": "nassal",
+                        "view": "Nasal",
                         "label": "fake"
                     }
                 ]

@@ -7,25 +7,26 @@ export function Instructions_Task3() {
 
     return (
         <>
-            <h3>Instructions: </h3>
-            <p >{jsonData.description}</p>
-            <Link style={{ backgroundColor: "black", borderRadius: 20, padding: 15, marginBottom: 10 }} to="/task3/form">Continue</Link>
-
+            <h2>Instructions: </h2>
+            <p style={{fontSize: 18}}>{jsonData.description}</p>
+            <Link  className='task-link' to="/task3/form">Continue</Link>
         </>
     )
 }
 
 export function Form_Task3() {
-    const [userAnswers, setUserAnswers] = useState([]);
     const [data, setData] = useState(jsonData.data);
+
+    const [userAnswers, setUserAnswers] = useState(
+        jsonData.data.map((item, index) => ({
+            id: index,    // Assign a unique id (based on the index)
+            choice: { zone: "", stage: "" }   // Initialize choices for each image
+        })
+        )
+    );
+
     const [index, setIndex] = useState(0);
-    const [pressSubmit, setPressSumbmit] = useState(false);
-
-
-    {/* Add item to userAnswers*/ }
-    const addAnswer = (newUserAnswer) => {
-        setUserAnswers([...userAnswers, newUserAnswer])
-    }
+    const [pressSubmit, setPressSubmit] = useState(false);
 
     {/* Remove item by id from userAnswers*/ }
     const removeAnswer = (idToRemoveUserAnswer) => {
@@ -33,30 +34,22 @@ export function Form_Task3() {
     }
 
     {/* Update item by id frp, userAnswers*/ }
-    const updateAnswer = (idToUpdate, answer) => {
+    const updateAnswer = (idToUpdate, question, answer) => {
 
-        // setUserAnswers(prevUserAnswers =>
-        //     prevUserAnswers.map(item =>
-        //         item.id === idToUpdate
-        //             ? { ...item, choice: {..., answer }
-        //             : item
-        //     )
-        // );
+        setUserAnswers(prevUserAnswers =>
+            prevUserAnswers.map(item =>
+                item.id === idToUpdate
+                    ? { ...item, choice: { ...item.choice, [question]: answer } }
+                    : item
+            )
+        );
     };
 
 
     // Handle checkbox change
-    const handleChange = (event, question,groupId) => {
-        
+    const handleChange = (event, question, groupId) => {
         const value = event.target.value;
-        // Check if answerId already exists
-        if (!userAnswers.find(answer => answer.id === groupId)) {
-            addAnswer({ id: groupId, choice: { [question]:value} })
-        }
-        else {
-            //console.log(userAnswers);
-            updateAnswer(groupId, question , { [question]:value})
-        }
+        updateAnswer(groupId, question, value)
         console.log(userAnswers);
     };
 
@@ -72,39 +65,66 @@ export function Form_Task3() {
 
 
     // Handle submit
-    const handleSubmit = (event) => {
-        console.log(event);
+    const handleSubmit = async (event) => {
         event.preventDefault();
+        if (isFormComplete()){
+            setPressSubmit(true);
+        console.log('Form Submitted', userAnswers);
+        }
+        else{
+            console.log('Form is incomplete')
+        }
     }
 
     // Check if all answers are filled
     const isFormComplete = () => {
-        return userAnswers.length === data.length && userAnswers.every(answer => answer.zone && answer.stage);
+        return userAnswers.length === data.length && userAnswers.every(answer => answer.choice.zone && answer.choice.stage);
     };
 
     return (
         <>
-            <div div className="task-container">
+            <div className="task-container">
+
                 <div className="image-container">
-                    <img src={data[index]} width={500} height={500} id="nassal_view_image" />
-                    <img src={data[index]} width={500} height={500} id="temporal_view_image" />
+                    <div>
+                        <p style={{fontSize:18}}><b>{data[index][0].view} View</b></p>
+                        <img src={data[index][0].img_url} width={250} height={250} id="nasal_view_image" />
+                    </div>
+                    <div>
+                        <p style={{fontSize:18}}><b>{data[index][0].view} View</b></p>
+                        <img src={data[index][1].img_url} width={250} height={250} id="temporal_view_image" />
+                    </div>
                 </div>
+                {/* Form */}
+                <form onSubmit={handleSubmit} className="form-container">
 
-                <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="zone">Zone</label>
+                        <select
+                            id="zone"
+                            value={userAnswers[index]?.choice.zone}
+                            onChange={(e) => handleChange(e, "zone", index)}
+                            className="form-select"
+                        >
+                            <option value="one">1</option>
+                            <option value="two">2</option>
+                            <option value="three">3</option>
+                        </select>
+                    </div>
 
-                    <p>Zone</p>
-                    <select value={userAnswers[index]?.choice.zone} onChange={(e) => { handleChange(e, "zone", index) }}>
-                        <option value="one">1</option>
-                        <option value="two">2</option>
-                        <option value="three">3</option>
-                    </select>
-
-                    <p>Stage</p>
-                    <select value={userAnswers[index]?.choice.stage} onChange={(e) => { handleChange(e, "stage", index) }}>
-                        <option value="one">1</option>
-                        <option value="two">2</option>
-                        <option value="three">3</option>
-                    </select>
+                    <div className="form-group">
+                        <label htmlFor="stage">Stage</label>
+                        <select
+                            id="stage"
+                            value={userAnswers[index]?.choice.stage}
+                            onChange={(e) => handleChange(e, "stage", index)}
+                            className="form-select"
+                        >
+                            <option value="one">1</option>
+                            <option value="two">2</option>
+                            <option value="three">3</option>
+                        </select>
+                    </div>
                     <br />
 
                     {/* Navigation Buttons */}
@@ -125,31 +145,34 @@ export function Form_Task3() {
                     </div>
 
                     {/* Submit Button */}
-                    <button  className="task-submit-button"
-                        type="submit"
-                        disabled={!isFormComplete()}
-                        style={{
-                            backgroundColor: !isFormComplete ? 'grey' : 'green',
-                            color: 'white',
-                            border: 'none',
-                            padding: '10px 20px',
-                            cursor: !isFormComplete ? 'not-allowed' : 'pointer',
-                            borderRadius: '5px',
-                            marginTop: '5px',
-                            marginBottom: '5px'
-                        }}
-                    >
-                        Submit
-                    </button>
+                    <div className="form-actions">
+                        <button 
+                         className="task-submit-button"
+                            type="submit"
+                            disabled={!isFormComplete()}
+                            style={{
+                                backgroundColor: isFormComplete() ?  'green' : 'grey' ,
+                                color: 'white',
+                                border: 'none',
+                                padding: '10px 20px',
+                                cursor: !isFormComplete() ? 'not-allowed' : 'pointer',
+                                borderRadius: '5px',
+                                marginTop: '5px',
+                                marginBottom: '5px'
+                            }}
+                        >
+                            Submit
+                        </button>
+                    </div>
 
                 </form>
-            </div>
 
-            {/*Display when task is completed*/}
-            { isFormComplete() ?
-                <Link style={{ backgroundColor: "black", borderRadius: 20, padding: 15, marginBottom: 10 }} to="/">Return Home</Link>
-                : <></>
-            }
+                {/*Display when task is completed*/}
+                {pressSubmit ?
+                    <Link style={{ backgroundColor: "black", borderRadius: 20, padding: 15, marginBottom: 10 }} to="/">Return Home</Link>
+                    : <></>
+                }
+            </div>
         </>
     )
 }

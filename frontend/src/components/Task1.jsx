@@ -6,24 +6,24 @@ import './Task1.css';
 export function Instructions_Task1() {
     return (
         <>
-            <h3>Instructions: </h3>
-            <p >{jsonData.description}</p>
-            <Link style={{ backgroundColor: "black", borderRadius: 20, padding: 15, marginBottom: 10 }} to="/task1/form">Continue</Link>
+            <h2>Instructions: </h2>
+            <p style={{fontSize: 18}}>{jsonData.description}</p>
+            <Link className='task-link' to="/task1/form">Continue</Link>
         </>
     )
 }
 
 export function Form_Task1() {
-    const [userAnswers, setUserAnswers] = useState([]);
     const [data, setData] = useState(jsonData.data);
-    const [index, setIndex] = useState(0);
-    const [pressSubmit, setPressSumbmit] = useState(false);
 
-
-    {/* Add item to userAnswers*/ }
-    const addAnswer = (newUserAnswer) => {
-        setUserAnswers([...userAnswers, newUserAnswer])
-    }
+    const [userAnswers, setUserAnswers] = useState(
+        jsonData.data.map((item, index) => ({
+            id: index,    // Assign a unique id (based on the index)
+            choice: ""   // Initialize choices for each image
+        })
+        )
+    ); const [index, setIndex] = useState(0);
+    const [pressSubmit, setPressSubmit] = useState(false);
 
     {/* Remove item by id from userAnswers*/ }
     const removeAnswer = (idToRemoveUserAnswer) => {
@@ -45,29 +45,33 @@ export function Form_Task1() {
     // Handle radio button change
     const handleChange = (event, groupId) => {
         const value = event.target.value;
-        // Check if answerId already exists
-        if (!userAnswers.find(answer => answer.id === groupId)) {
-            addAnswer({ id: groupId, choice: value })
-        }
-        else {
-            //console.log(userAnswers);
-            updateAnswer(groupId, value)
-        }
+        updateAnswer(groupId, value)
     };
 
     // Handle form submission
     const handleSubmit = async (event) => {
-        console.log("Submit form")
-        console.log("Answers:")
-        console.log(userAnswers)
 
         event.preventDefault();
+        if (isFormComplete()) {
+            setPressSubmit(true);
+            console.log('Form Submitted', userAnswers);
+            sendDataToAPI();
+        }
+        else {
+            console.log('Form is incomplete')
+        }
+
+    }
+
+    const sendDataToAPI = async () => {
 
         // Create a payload of selected answers
-        // const answers = Object.keys(selectedAnswers).map(imageId => ({
-        //     imageId: imageId,
-        //     answer: selectedAnswers[imageId],
-        // }));
+        const answers = Object.keys(userAnswers).map(imageId => ({
+            imageId: imageId,
+            data: userAnswers[imageId],
+        }));
+
+        console.log(answers);
 
         // API call to submit answers (replace with your API call)
         // try {
@@ -101,75 +105,85 @@ export function Form_Task1() {
         });
     };
 
+
+    // Check if all choices have been selected for the current image
+    const isFormComplete = () => {
+        return userAnswers.every(answer => (answer.choice == "T" || answer.choice == "F")); // Ensure choices exist for all answers
+    };
+
     return (
         <>
 
             <div className="task-container">
                 <div className="image-container">
-                    {/* <div className=""> */}
+                    <div >
+                    <p style={{fontSize:18}}><b>{data[index].view} View</b></p>
                     <img
                         src={data[index].img_url}
                         alt={`Group ${index} image`}
-                        width={500}
-                        height={500}
+                        width={250}
+                        height={250}
                         className="group_image"
                     />
-                    {/* </div> */}
+                    </div>
                 </div>
 
                 {/* Form with Radio buttons */}
-                <div className='form-container'>
-                    <form onSubmit={handleSubmit}>
-                        <div className="form-group">
-                            <label>
-                                <input
-                                    type="radio"
-                                    name={`group-${index}`}
-                                    value="T"
-                                    checked={userAnswers[index]?.choice === 'T'}
-                                    onChange={(e) => handleChange(e, index)}
-                                /> True
-                            </label>
-                        </div>
-                        <div className="form-group">
-                            <label>
-                                <input
-                                    type="radio"
-                                    name={`group-${index}`}
-                                    value="F"
-                                    checked={userAnswers[index]?.choice === 'F'}
-                                    onChange={(e) => handleChange(e, index)}
-                                /> False
-                            </label>
-                        </div>
 
-                        {/* Navigation Buttons */}
-                        <div className="navigation-buttons">
-                            {
-                                (index > 0) ?
-                                    <button type="button" onClick={() => handleNavigation(-1)} disabled={index === 0}>
-                                        Previous
-                                    </button> : <></>
-                            }
+                <form onSubmit={handleSubmit} className='form-container'>
+                    <div className="form-group">
+                        <label>
+                            <input 
 
-                            {
-                                (index !== data.length - 1) ?
+                                type="radio"
+                                name={`group-${index}`}
+                                value="T"
+                                checked={userAnswers[index]?.choice === 'T'}
+                                onChange={(e) => handleChange(e, index)}
+                            /> <p style={{paddingLeft: "10px"}}>True</p>
+                        </label>
+                    </div>
+                    <div className="form-group">
+                        <label>
+                            <input
+                                type="radio"
+                                name={`group-${index}`}
+                                value="F"
+                                checked={userAnswers[index]?.choice === 'F'}
+                                onChange={(e) => handleChange(e, index)}
+                            /> <p style={{paddingLeft: "10px"}}>False</p>
+                        </label>
+                    </div>
+
+                    {/* Navigation Buttons */}
+                    <div className="navigation-buttons">
+                        {
+                            (index > 0) ?
+                                <button type="button" onClick={() => handleNavigation(-1)} disabled={index === 0}>
+                                    Previous
+                                </button> : <></>
+                        }
+
+                        {
+                            (index !== data.length - 1) ?
                                 <button type="button" onClick={() => handleNavigation(1)} disabled={index === data.length - 1}>
                                     Next
                                 </button> : <></>
-                            }
-                        </div>
+                        }
+                    </div>
 
-                        {/* Submit Button */}
-                        <button onClick={() => { setPressSumbmit(true); }} className="task-submit-button"
+
+                    {/* Submit Button */}
+                    <div className="form-actions">
+                        <button className="task-submit-button"
                             type="submit"
-                            disabled={userAnswers.length !== data.length}
+                            disabled={!isFormComplete()}
                             style={{
-                                backgroundColor: userAnswers.length !== data.length ? 'grey' : 'green',
+                                backgroundColor: isFormComplete() ? 'green' : 'grey',
                                 color: 'white',
                                 border: 'none',
                                 padding: '10px 20px',
-                                cursor: userAnswers.length !== data.length ? 'not-allowed' : 'pointer',
+                                cursor: !isFormComplete() ? 'not-allowed' : 'pointer',
                                 borderRadius: '5px',
                                 marginTop: '5px',
                                 marginBottom: '5px'
@@ -177,15 +191,17 @@ export function Form_Task1() {
                         >
                             Submit
                         </button>
-                    </form>
+                    </div>
+                </form>
 
-                    {pressSubmit ?
-                        <Link style={{ backgroundColor: "black", borderRadius: 20, padding: 15, marginBottom: 10 }} to="/task2/instructions">Go to next task</Link>
-                        :
-                        <></>}
-                </div>
-
+                {pressSubmit ?
+                    <Link style={{ backgroundColor: "black", borderRadius: 20, padding: 15, marginBottom: 10 }} to="/task2/instructions">Go to next task</Link>
+                    :
+                    <></>}
             </div>
+
+
+
         </>
     );
 }

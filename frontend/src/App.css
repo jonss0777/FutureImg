@@ -3,14 +3,14 @@
 
 /* Body Styles*/
 body {
-  padding:0;
-  color: black;
+  padding: 0;
   margin: 0;
+  color: black;
   display: flex;
   background-color: #fff;
-  font-family: 'Arial', sans-serif; 
-  flex-direction: column; /* Ensure body takes full screen height */
-  justify-content: space-between; /* Space out header, content, and footer */
+  font-family: 'Arial', sans-serif;
+  flex-direction: column;
+  /* Ensure body takes full screen height */
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
@@ -19,29 +19,34 @@ body {
 /* Navbar Styles */
 nav {
   display: flex;
-  justify-content: space-around;  /* Align the two main sections (left and right) */
+  justify-content: space-around;
+  /* Align the two main sections (left and right) */
   align-items: center;
-  background-color: #000000; /* Dark background for navbar */
-  padding: 15px;
+  background-color: #000000;
+  /* Dark background for navbar */
+  padding: 5px;
   position: sticky;
   top: 0;
-  
   z-index: 1000;
   width: 100%;
 }
 
 /* First Element (Home) */
 nav .left {
-  flex: 0 0 20%;  /* 20% width for Home */
+  flex: 0 0 20%;
+  /* 20% width for Home */
   display: flex;
-  justify-content: flex-start;  /* Align left */
+  justify-content: flex-start;
+  /* Align left */
 }
 
 /* Right Section (Login & Register) */
 nav .right {
-  flex: 0 0 20%;  /* 40% width for the right section */
+  flex: 0 0 20%;
+  /* 40% width for the right section */
   display: flex;
-  justify-content: space-between;  /* Space out the login and register links */
+  justify-content: space-between;
+  /* Space out the login and register links */
   align-items: center;
 }
 
@@ -58,14 +63,18 @@ nav a {
 
 /* Hover effect on links */
 nav a:hover {
-  background-color: #2c865f;  /* Green background on hover (can change to blue if desired) */
-  transform: translateY(-2px); /* Slight lift effect */
+  background-color: #2c865f;
+  /* Green background on hover (can change to blue if desired) */
+  transform: translateY(-2px);
+  /* Slight lift effect */
 }
 
 /* Active link styling */
 nav a.active {
-  background-color: #c5c7c9; /* Light gray for active links */
-  color: #000;  /* Black text for better visibility */
+  background-color: #c5c7c9;
+  /* Light gray for active links */
+  color: #000;
+  /* Black text for better visibility */
 }
 
 
@@ -73,30 +82,16 @@ nav a.active {
 /* Main Content Area */
 main {
   padding: 1000px;
-  flex: 1; /* Ensure main content area takes up all available space */
+  flex: 1;
+  /* Ensure main content area takes up all available space */
 }
 
 /* Task page layout */
 .task-container {
   display: flex;
-  justify-content: space-around;
-  margin-top: 20px;
-  flex-wrap: wrap;
-}
-
-/* Styling for Task containers (Task1, Task2, Task3) */
-.task-container > div {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 30%;
-  margin: 10px;
-  transition: box-shadow 0.3s ease;
-}
-
-.task-container > div:hover {
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* Link Styling for Task specific pages */
@@ -114,15 +109,103 @@ main {
 }
 
 .task-container a:hover {
-  background-color: #2c865f; /* Darker blue */
+  background-color: #2c865f;
+  /* Darker blue */
   transform: translateY(-2px);
 }
+
+
+/* Task Form Styles */
+.form-container {
+  padding: 10px;
+  /* background-color: #000000;  */
+  color: #000000;
+  font-family: 'Arial', sans-serif;
+  max-width: 500px;
+  margin: 15px auto;
+  /* border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  font-size: 1rem;
+  margin-bottom: 8px;
+  display: block;
+  color: #000000;
+  display: flex;
+
+}
+
+.form-select {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #000000;
+  color: #ffffff;
+  width: 100%;
+  transition: border-color 0.3s ease;
+}
+
+.form-select:focus {
+  border-color: #2c865f;
+  /* Blue border on focus */
+  outline: none;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.form-btn {
+  background-color: #2c865f;
+  color: #fff;
+  font-size: 1.2rem;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.form-btn:hover {
+  background-color: #256b47;
+  /* Slightly darker green */
+  transform: translateY(-2px);
+  /* Lift effect */
+}
+
+.form-btn:disabled {
+  background-color: grey;
+  cursor: not-allowed;
+}
+
+/* Mobile Styles */
+@media (max-width: 600px) {
+  .form-container {
+    padding: 20px;
+    width: 90%;
+  }
+
+  .form-btn {
+    font-size: 1rem;
+    padding: 10px 20px;
+  }
+}
+
+
 
 /* Footer Styles */
 footer {
   text-align: center;
   padding: 15px;
-  background-color: #242424;
+  background-color: #000000;
   color: #fff;
   margin-top: 50px;
 }
@@ -139,7 +222,7 @@ footer {
     align-items: center;
   }
 
-  .task-container > div {
+  .task-container>div {
     width: 80%;
     margin: 10px 0;
   }
@@ -151,7 +234,9 @@ footer {
     padding: 0rem;
   }
 
-  .task-container > div {
-    width: 22%; /* Adjust task cards for larger screens */
+  .task-container>div {
+    width: 80%;
+    /* Adjust task cards for larger screens */
+    height: 100%;
   }
 }

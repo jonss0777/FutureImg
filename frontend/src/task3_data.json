@@ -7,7 +7,7 @@
     [
     {
         "id": 0,
-        "view": "nassal",
+        "view": "Nasal",
         "img_url": "https://twoplaidaprons.com/wp-content/uploads/2020/05/Chinese-pork-dumplings-picking-up-a-dumpling-with-chopsticks-1109x1536.jpg",
         "label": "fake",
         "zone": 0,
@@ -15,7 +15,7 @@
     },
     {
         "id": 3,
-        "view": "temporal",
+        "view": "Temporal",
         "img_url": "https://twoplaidaprons.com/wp-content/uploads/2020/05/Chinese-pork-dumplings-picking-up-a-dumpling-with-chopsticks-1109x1536.jpg",
         "label": "fake",
         "zone": 0,
@@ -26,7 +26,7 @@
     [
         {
         "id": 0,
-        "view": "nassal",
+        "view": "Nasal",
         "img_url": "https://twoplaidaprons.com/wp-content/uploads/2020/05/Chinese-pork-dumplings-the-filling-before-mixing.jpg",
         "label": "fake",
         "zone": 0,
@@ -34,7 +34,7 @@
     },
     {
         "id": 3,
-        "view": "temporal",
+        "view": "Temporal",
         "img_url": "https://twoplaidaprons.com/wp-content/uploads/2020/05/Chinese-pork-dumplings-the-filling-before-mixing.jpg",
         "label": "fake",
         "zone": 0,
