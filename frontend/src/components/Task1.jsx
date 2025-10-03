@@ -145,16 +145,23 @@ export function Form_Task1() {
 
                         {/* Navigation Buttons */}
                         <div className="navigation-buttons">
-                            <button type="button" onClick={() => handleNavigation(-1)} disabled={index === 0}>
-                                Previous
-                            </button>
-                            <button type="button" onClick={() => handleNavigation(1)} disabled={index === data.length - 1}>
-                                Next
-                            </button>
+                            {
+                                (index > 0) ?
+                                    <button type="button" onClick={() => handleNavigation(-1)} disabled={index === 0}>
+                                        Previous
+                                    </button> : <></>
+                            }
+
+                            {
+                                (index !== data.length - 1) ?
+                                <button type="button" onClick={() => handleNavigation(1)} disabled={index === data.length - 1}>
+                                    Next
+                                </button> : <></>
+                            }
                         </div>
 
                         {/* Submit Button */}
-                        <button onClick={ () => {setPressSumbmit(true);} } className="task-submit-button"
+                        <button onClick={() => { setPressSumbmit(true); }} className="task-submit-button"
                             type="submit"
                             disabled={userAnswers.length !== data.length}
                             style={{
@@ -162,7 +169,7 @@ export function Form_Task1() {
                                 color: 'white',
                                 border: 'none',
                                 padding: '10px 20px',
-                                cursor: userAnswers.length === data.length ? 'not-allowed' : 'pointer',
+                                cursor: userAnswers.length !== data.length ? 'not-allowed' : 'pointer',
                                 borderRadius: '5px',
                                 marginTop: '5px',
                                 marginBottom: '5px'
@@ -173,7 +180,7 @@ export function Form_Task1() {
                     </form>
 
                     {pressSubmit ?
-                        <Link style={{ backgroundColor: "black", borderRadius: 20, padding: 15, marginBottom: 10 }} to="/task2">Go to next task</Link>
+                        <Link style={{ backgroundColor: "black", borderRadius: 20, padding: 15, marginBottom: 10 }} to="/task2/instructions">Go to next task</Link>
                         :
                         <></>}
                 </div>

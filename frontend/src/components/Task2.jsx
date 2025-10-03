@@ -7,69 +7,81 @@ export function Instructions_Task2() {
     return (
         <>
             <h3>Instructions: </h3>
-            <p >{jsonData.description}</p>
-            <Link style={{ backgroundColor: "black", borderRadius: 20, padding: 15, marginBottom: 10 }} to="/task2/form">Continue</Link>
+            <p>{jsonData.description}</p>
+            <Link
+                style={{
+                    backgroundColor: "black",
+                    borderRadius: 20,
+                    padding: 15,
+                    marginBottom: 10
+                }}
+                to="/task2/form"
+            >
+                Continue
+            </Link>
         </>
-    )
+    );
 }
 
-
 export function Form_Task2() {
-    const [userAnswers, setUserAnswers] = useState([]);
+    const [userAnswers, setUserAnswers] = useState(
+    jsonData.data.map((item, index) => ({
+        id: index,    // Assign a unique id (based on the index)
+        choices: []   // Initialize choices for each image
+    }))
+);
     const [data, setData] = useState(jsonData.data);
     const [index, setIndex] = useState(0);  // To track the current image
-    const [pressSubmit, setPressSumbmit] = useState(false);
+    const [pressSubmit, setPressSubmit] = useState(false);
+
 
     {/* Add item to userAnswers*/ }
     const addAnswer = (newUserAnswer) => {
-        setUserAnswers([...items, newUserAnswer])
+        setUserAnswers([...userAnswers, newUserAnswer])
     }
 
-    {/* Remove item by id from userAnswers*/ }
-    const removeAnswer = (idToRemoveUserAnswer) => {
-        setUserAnswers(userAnswers.filter((item) => item.id !== idToRemoveUserAnswer));
-    }
-
-    {/* Update item by id frp, userAnswers*/ }
-    const updateAnswer = (idToUpdate, newObj) => {
+    // Update choices for a given index
+    const updateAnswer = (groupId, choice) => {
         setUserAnswers(prevUserAnswers =>
-            prevUserAnswers.map(item =>
-                item.id === idToUpdate
-                    ? { ...item, obj: newObj }
+            prevUserAnswers.map((item) =>
+                item.id === groupId
+                    ? { ...item, choices: item.choices.includes(choice) ? item.choices.filter(c => c !== choice) : [...item.choices, choice] }
                     : item
             )
         );
     };
 
-
-    // Handle checkbox change
-    const handleChange = (event) => {
-        const { name, checked } = event.target;
-        setUserAnswers(prevState => ({
-            ...prevState,
-            [name]: checked,  // Store the checkbox status
-        }));
+    // Handle checkbox change (add/remove choice)
+    const handleChange = (event, groupId) => {
+        const name = event.target.name;
+        console.log(name);
+        updateAnswer(groupId, name);  
+        
     };
+
 
     // Handle Next and Previous navigation
     const handleNavigation = (direction) => {
-        console.log("Index: ", direction)
         setIndex(prevIndex => {
             const newIndex = prevIndex + direction;
             if (newIndex < 0) return 0;
             if (newIndex >= data.length) return data.length - 1;
             return newIndex;
         });
-
     };
 
-    // Handle Submit
+    // Handle submit
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log('Form Submitted', userAnswers);
         // Add your API call logic here
     };
 
+    // Check if all choices have been selected for the current image
+    const isFormComplete = () => {
+        
+        return userAnswers.every(answer => answer.choices.length > 0); // Ensure choices exist for all answers
+    };
 
     return (
         <>
@@ -89,140 +101,116 @@ export function Form_Task2() {
                     {/* Right Images (other views) */}
                     <div className="right-image-container">
                         <div className="image-row">
-                            <img
-                                src={data[index].views.nassal[0].img_url}
-                                alt={`nassal view 0`}
-                                width={250}
-                                height={250}
-                                className="other-image"
-                            />
-                            <img
-                                src={data[index].views.nassal[1].img_url}
-                                alt={`nassal view 1`}
-                                width={250}
-                                height={250}
-                                className="other-image"
-                            />
+                            {data[index].views.nassal.map((view, idx) => (
+                                <img
+                                    key={`nassal-${idx}`}
+                                    src={view.img_url}
+                                    alt={`nassal view ${idx}`}
+                                    width={250}
+                                    height={250}
+                                    className="other-image"
+                                />
+                            ))}
                         </div>
                         <div className="image-row">
-                            <img
-                                src={data[index].views.temporal[0].img_url}
-                                alt={`temporal view 0`}
-                                width={250}
-                                height={250}
-                                className="other-image"
-                            />
-                            <img
-                                src={data[index].views.temporal[1].img_url}
-                                alt={`temporal view 1`}
-                                width={250}
-                                height={250}
-                                className="other-image"
-                            />
+                            {data[index].views.temporal.map((view, idx) => (
+                                <img
+                                    key={`temporal-${idx}`}
+                                    src={view.img_url}
+                                    alt={`temporal view ${idx}`}
+                                    width={250}
+                                    height={250}
+                                    className="other-image"
+                                />
+                            ))}
                         </div>
                     </div>
                 </div>
 
-
                 {/* Form with Checkboxes */}
                 <form onSubmit={handleSubmit}>
                     <div className="checkbox-container">
-                        <label>
-                            1:
-                            <input
-                                type="checkbox"
-                                name="one"
-                                checked={userAnswers[index]?.choice === ""}
-                                onChange={handleChange}
-                            />
-                        </label>
-                        <label>
-                            2:
-                            <input
-                                type="checkbox"
-                                name="two"
-                                checked={userAnswers[index]?.choice === ""}
-                                onChange={handleChange}
-                            />
-                        </label>
-                        <label>
-                            3:
-                            <input
-                                type="checkbox"
-                                name="three"
-                                checked={userAnswers[index]?.choise === ""}
-                                onChange={handleChange}
-                            />
-                        </label>
-                        <label>
-                            4:
-                            <input
-                                type="checkbox"
-                                name="four"
-                                checked={userAnswers[index]?.choice === ""}
-                                onChange={handleChange}
-                            />
-                        </label>
-                        <label>
-                            None:
-                            <input
-                                type="checkbox"
-                                name="none"
-                                checked={userAnswers[index]?.choice === ""}
-                                onChange={handleChange}
-                            />
-                        </label>
+                        {["1", "2", "3", "4", "None"].map(option => (
+                            <label key={option}>
+                                {option}:
+                                <input
+                                    type="checkbox"
+                                    name={option}
+                                    checked={userAnswers[index]?.choices.includes(option)}
+                                    onChange={(e) => handleChange(e, index)}
+                                />
+                            </label>
+                        ))}
                     </div>
 
                     {/* Navigation Buttons */}
                     <div className="navigation-buttons">
-                        <button type="button" onClick={() => handleNavigation(-1)} disabled={index === 0}>
-                            Previous
-                        </button>
-                        <button type="button" onClick={() => handleNavigation(1)} disabled={index === data.length - 1}>
-                            Next
-                        </button>
+                        {index > 0 && (
+                            <button
+                                type="button"
+                                onClick={() => handleNavigation(-1)}
+                                disabled={index === 0}
+                            >
+                                Previous
+                            </button>
+                        )}
+                        {index < data.length - 1 && (
+                            <button
+                                type="button"
+                                onClick={() => handleNavigation(1)}
+                                disabled={index === data.length - 1}
+                            >
+                                Next
+                            </button>
+                        )}
                     </div>
 
                     {/* Submit Button */}
                     <button
+                        onClick={() => { setPressSubmit(true);
+                            console.log(userAnswers);
+                         }}
+                        className="task-submit-button"
                         type="submit"
-                        disabled={userAnswers.length !== data.length}
+                        disabled={!isFormComplete()}
                         style={{
-                            backgroundColor: userAnswers.length !== data.length ? 'grey' : 'green',
+                            backgroundColor: !isFormComplete() ? 'grey' : 'green',
                             color: 'white',
                             border: 'none',
                             padding: '10px 20px',
-                            cursor: userAnswers.length === data.length ? 'not-allowed' : 'pointer',
-                            borderRadius: '5px'
+                            cursor: !isFormComplete() ? 'not-allowed' : 'pointer',
+                            borderRadius: '5px',
+                            marginTop: '5px',
+                            marginBottom: '5px'
                         }}
                     >
                         Submit
                     </button>
                 </form>
 
-                {pressSubmit ? 
-                    <Link style={{ backgroundColor: "black", borderRadius: 20, padding: 15, marginBottom: 10 }} to="/task3">Go to next task</Link>
-                :
-                 <></>
-                }
+                {pressSubmit && (
+                    <Link
+                        style={{
+                            backgroundColor: "black",
+                            borderRadius: 20,
+                            padding: 15,
+                            marginBottom: 10
+                        }}
+                        to="/task3/instructions"
+                    >
+                        Go to next task
+                    </Link>
+                )}
             </div>
         </>
     );
 }
 
-
 /*
- Display to the user a center image on the left and 4 images on the right at a time. And allow him/she to select the images on the right that he/she believes align with
- the left image.
-
+ Display to the user a center image on the left and 4 images on the right at a time.
+ Allow him/her to select the images on the right that align with the left image.
 */
 
 export default function Task2() {
-
-    return (
-        <>
-            <Outlet />
-        </>
-    )
+    return <Outlet />;
 }
