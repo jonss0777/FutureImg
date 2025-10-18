@@ -7,7 +7,7 @@ export function Instructions_Task2() {
     return (
         <>
             <h2>Instructions: </h2>
-            <p style={{fontSize: 18}}>{jsonData.description}</p>
+            <p style={{ fontSize: 18 }}>{jsonData.description}</p>
             <Link
                 className='task-link'
                 to="/task2/form"
@@ -34,13 +34,30 @@ export function Form_Task2() {
 
     // Update choices for a given index
     const updateAnswer = (groupId, choice) => {
-        setUserAnswers(prevUserAnswers =>
-            prevUserAnswers.map((item) =>
-                item.id === groupId
-                    ? { ...item, choices: item.choices.includes(choice) ? item.choices.filter(c => c !== choice) : [...item.choices, choice] }
-                    : item
-            )
-        );
+
+        // If the user selects None deselect all other options. 
+        if (choice == 'None') {
+            setUserAnswers(prevUserAnswers =>
+                prevUserAnswers.map((item) =>
+                    item.id === groupId
+                        ? { ...item, choices: [choice] }
+                        : item
+                )
+            );
+
+        }
+        // Select 1 or more choices not including
+        // If None was selected deselect it 
+        else {
+            setUserAnswers(prevUserAnswers =>
+                prevUserAnswers.map((item) =>
+                    item.id === groupId
+                        ? { ...item, choices: item.choices.includes(choice) ? item.choices.filter(c => c !== choice && c !== 'None' && c !=='NA') : item.choices.filter(c => c !== 'None' &&  c !=='NA').concat(choice) }
+                        : item
+                )
+            );
+
+        }
     };
 
 
@@ -56,6 +73,11 @@ export function Form_Task2() {
     // Handle Next and Previous navigation
     const handleNavigation = (direction) => {
         setIndex(prevIndex => {
+
+            // Allow a user to move foward only if they selected a choice.
+            if(direction == 1 && userAnswers[prevIndex].choices.length == 0 ){
+                return prevIndex;
+            }
             const newIndex = prevIndex + direction;
             if (newIndex < 0) return 0;
             if (newIndex >= data.length) return data.length - 1;
@@ -66,17 +88,19 @@ export function Form_Task2() {
     // Handle submit
     const handleSubmit = (event) => {
         event.preventDefault();
-        if(isFormComplete()){
-        console.log('Form Submitted', userAnswers);
+        if (isFormComplete()) {
+            setPressSubmit(true);
+            console.log('Form Submitted', userAnswers);
             sendDataToAPI();
-        } else{
-            console.log('For is incomplete')
+        }
+        else {
+            console.log('Form is incomplete')
         }
         // Add your API call logic here
     };
 
 
-     const sendDataToAPI = async () => {
+    const sendDataToAPI = async () => {
 
         // Create a payload of selected answers
         const answers = Object.keys(userAnswers).map(imageId => ({
@@ -93,100 +117,105 @@ export function Form_Task2() {
         return userAnswers.every(answer => answer.choices.length > 0); // Ensure choices exist for all answers
     };
 
+    const width = 400;
+    const height = 400;
+
     return (
         <>
             <div className="task-container">
-               
-                    <div className='image-container'>
-                        {/* Left Image (center view) */}
-                        <div className="left-image-container">
-                            <div >
-                        <p style={{fontSize: 18}}><b>{data[index].views.center.view} View </b></p>
+
+                <div className='image-container'>
+                    {/* Left Image (center view) */}
+                    <div className="left-image-container">
+                        <div >
+                            <p style={{ fontSize: 18 }}>{data[index].views.center.view} View </p>
                             <img
                                 src={data[index].views.center.img_url}
                                 alt={`center view ${index}`}
-                                width={250}
-                                height={250}
+                                width={width}
+                                height={height}
                                 className="center-view"
                             />
-                            </div>
-                        </div>
-
-                        {/* Right Images (other views) */}
-                        <div className="right-image-container">
-                            <div className="image-row">
-                                {data[index].views.nassal.map((view, idx) => (
-                                    <img
-                                        key={`nasal-${idx}`}
-                                        src={view.img_url}
-                                        alt={`nasal view ${idx}`}
-                                        width={250}
-                                        height={250}
-                                        className="other-image"
-                                    />
-                                ))}
-                            </div>
-                            <div className="image-row">
-                                {data[index].views.temporal.map((view, idx) => (
-                                    <img
-                                        key={`temporal-${idx}`}
-                                        src={view.img_url}
-                                        alt={`temporal view ${idx}`}
-                                        width={250}
-                                        height={250}
-                                        className="other-image"
-                                    />
-                                ))}
-                            </div>
                         </div>
                     </div>
 
-                    {/* Form */}
-                    <form onSubmit={handleSubmit} className='form-container'>
-                        <div className="form-group">
-                            {["1", "2", "3", "4", "None"].map(option => (
-                                <label key={option}>
-                                    <p>{option}:</p>
-                                    <input
-                                        type="checkbox"
-                                        name={option}
-                                        checked={userAnswers[index]?.choices.includes(option)}
-                                        onChange={(e) => handleChange(e, index)}
-                                    />
-                                </label>
+                    {/* Right Images (other views) */}
+                    <div className="right-image-container">
+                        <div className="image-col">
+                            <p style={{ fontSize: 18 }}>Nasal View</p>
+                            {data[index].views.nassal.map((view, idx) => (
+                                <img
+                                    key={`nasal-${idx}`}
+                                    src={view.img_url}
+                                    alt={`nasal view ${idx}`}
+                                    width={width}
+                                    height={height}
+                                    className="other-image"
+                                />
                             ))}
                         </div>
-
-                        {/* Navigation Buttons */}
-                        <div className="navigation-buttons">
-                            {index > 0 && (
-                                <button
-                                    type="button"
-                                    onClick={() => handleNavigation(-1)}
-                                    disabled={index === 0}
-                                >
-                                    Previous
-                                </button>
-                            )}
-                            {index < data.length - 1 && (
-                                <button
-                                    type="button"
-                                    onClick={() => handleNavigation(1)}
-                                    disabled={index === data.length - 1}
-                                >
-                                    Next
-                                </button>
-                            )}
+                        <div className="image-col">
+                            <p style={{ fontSize: 18 }}>Temporal View</p>
+                            {data[index].views.temporal.map((view, idx) => (
+                                <img
+                                    key={`temporal-${idx}`}
+                                    src={view.img_url}
+                                    alt={`temporal view ${idx}`}
+                                    width={width}
+                                    height={height}
+                                    className="other-image"
+                                />
+                            ))}
                         </div>
+                    </div>
+                </div>
 
-                        {/* Submit Button */}
-                         <div className="form-actions">
+                {/* Form */}
+                <form onSubmit={handleSubmit} className='form-container'>
+                    <div className="form-group">
+                        {["1", "2", "3", "4", "None"].map(option => (
+                            <label key={option}>
+                                <p>{option}:</p>
+                                <input
+                                    type="checkbox"
+                                    name={option}
+                                    checked={userAnswers[index]?.choices.includes(option)}
+                                    onChange={(e) => handleChange(e, index)}
+                                />
+                            </label>
+                        ))}
+                    </div>
+
+                    {/* Navigation Buttons */}
+                    <div className="navigation-buttons">
+                        {index > 0 && (
+                            <button
+                                type="button"
+                                onClick={() => handleNavigation(-1)}
+                                disabled={index === 0}
+                            >
+                                Previous
+                            </button>
+                        )}
+                        {index < data.length - 1 && (
+                            <button
+                                type="button"
+                                onClick={() => handleNavigation(1)}
+                                disabled={index === data.length - 1}
+                            >
+                                Next
+                            </button>
+                        )}
+                    </div>
+
+                    {/* Submit Button */}
+                    <div className="form-actions">
                         <button
                             className="task-submit-button"
                             type="submit"
                             disabled={!isFormComplete()}
                             style={{
-                                backgroundColor: isFormComplete() ?  'green' :  'grey',
+                                backgroundColor: isFormComplete() ? 'green' : 'grey',
                                 color: 'white',
                                 border: 'none',
                                 padding: '10px 20px',
@@ -198,22 +227,25 @@ export function Form_Task2() {
                         >
                             Submit
                         </button>
+                        <div>
+                            {pressSubmit ?
+                                <Link
+                                    style={{
+                                        backgroundColor: "black",
+                                        borderRadius: 20,
+                                        padding: 15,
+                                        marginBottom: 10
+                                    }}
+                                    to="/task3/instructions"
+                                >
+                                    Go to next task
+                                </Link> : <></>
+                            }
                         </div>
-                    </form>
-               
-                {pressSubmit && (
-                    <Link
-                        style={{
-                            backgroundColor: "black",
-                            borderRadius: 20,
-                            padding: 15,
-                            marginBottom: 10
-                        }}
-                        to="/task3/instructions"
-                    >
-                        Go to next task
-                    </Link>
-                )}
+                    </div>
+                </form>
+
+
             </div>
         </>
     );
@@ -225,5 +257,10 @@ export function Form_Task2() {
 */
 
 export default function Task2() {
-    return <Outlet />;
+
+    return (<>
+        <h2>Task 2</h2>
+        <Outlet />
+
+    </>);
 }

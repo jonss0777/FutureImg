@@ -15,6 +15,8 @@ export function Instructions_Task3() {
 }
 
 export function Form_Task3() {
+    const width = 500;
+    const height = 500;
     const [data, setData] = useState(jsonData.data);
 
     const [userAnswers, setUserAnswers] = useState(
@@ -55,7 +57,15 @@ export function Form_Task3() {
 
     // Handle Next and Previous navigation
     const handleNavigation = (direction) => {
+
+        
+
+
         setIndex(prevIndex => {
+            // Allow a user to move foward only if they selected a choice.
+        if(direction == 1 && userAnswers[prevIndex].choice.stage === "" || userAnswers[prevIndex].choice.zone === ""){
+            return prevIndex;
+        }
             const newIndex = prevIndex + direction;
             if (newIndex < 0) return 0;
             if (newIndex >= data.length) return data.length - 1;
@@ -87,12 +97,12 @@ export function Form_Task3() {
 
                 <div className="image-container">
                     <div>
-                        <p style={{fontSize:18}}><b>{data[index][0].view} View</b></p>
-                        <img src={data[index][0].img_url} width={250} height={250} id="nasal_view_image" />
+                        <p style={{fontSize:18}}>{data[index][0].view} View</p>
+                        <img src={data[index][0].img_url} width={width} height={height} id="nasal_view_image" />
                     </div>
                     <div>
-                        <p style={{fontSize:18}}><b>{data[index][0].view} View</b></p>
-                        <img src={data[index][1].img_url} width={250} height={250} id="temporal_view_image" />
+                        <p style={{fontSize:18}}>{data[index][1].view} View</p>
+                        <img src={data[index][1].img_url} width={width} height={height} id="temporal_view_image" />
                     </div>
                 </div>
                 {/* Form */}
@@ -105,7 +115,8 @@ export function Form_Task3() {
                             value={userAnswers[index]?.choice.zone}
                             onChange={(e) => handleChange(e, "zone", index)}
                             className="form-select"
-                        >
+                         required >
+                            <option value="">-- Choose a value --</option>
                             <option value="one">1</option>
                             <option value="two">2</option>
                             <option value="three">3</option>
@@ -119,7 +130,9 @@ export function Form_Task3() {
                             value={userAnswers[index]?.choice.stage}
                             onChange={(e) => handleChange(e, "stage", index)}
                             className="form-select"
+                            required
                         >
+                            <option value="">-- Choose a value --</option>
                             <option value="one">1</option>
                             <option value="two">2</option>
                             <option value="three">3</option>
@@ -186,10 +199,9 @@ Display to the user 2 images at a time and allow them to select the zone and sta
 
 export default function Task3() {
 
-    return (
-        <>
-            <Outlet />
-        </>
-
-    )
+    return (<>
+    <h2>Task 2</h2>
+    <Outlet />
+    
+     </>);
 }

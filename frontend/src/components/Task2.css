@@ -13,14 +13,14 @@
 
 .right-image-container{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 
 }
 
-.image-row{
+.image-col{
     padding: 10px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 10px
 }
 
@@ -44,3 +44,10 @@
   width:500px
 
 }
+
+.form-group{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+

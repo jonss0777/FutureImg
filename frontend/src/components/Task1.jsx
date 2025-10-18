@@ -7,7 +7,7 @@ export function Instructions_Task1() {
     return (
         <>
             <h2>Instructions: </h2>
-            <p style={{fontSize: 18}}>{jsonData.description}</p>
+            <p style={{ fontSize: 18 }}>{jsonData.description}</p>
             <Link className='task-link' to="/task1/form">Continue</Link>
         </>
     )
@@ -19,7 +19,7 @@ export function Form_Task1() {
     const [userAnswers, setUserAnswers] = useState(
         jsonData.data.map((item, index) => ({
             id: index,    // Assign a unique id (based on the index)
-            choice: ""   // Initialize choices for each image
+            choice: "NA"   // Initialize choices for each image
         })
         )
     ); const [index, setIndex] = useState(0);
@@ -98,6 +98,13 @@ export function Form_Task1() {
     const handleNavigation = (direction) => {
         //console.log("userAnswers: ", userAnswers);
         setIndex(prevIndex => {
+
+            // Allow a user to move foward only if they selected a choice.
+            if(direction == 1 && userAnswers[prevIndex].choice === "NA"){
+                return prevIndex;
+            }
+
+
             const newIndex = prevIndex + direction;
             if (newIndex < 0) return 0;
             if (newIndex >= data.length) return data.length - 1;
@@ -110,6 +117,8 @@ export function Form_Task1() {
     const isFormComplete = () => {
         return userAnswers.every(answer => (answer.choice == "T" || answer.choice == "F")); // Ensure choices exist for all answers
     };
+    const width = 500;
+    const height = 500;
 
     return (
         <>
@@ -117,14 +126,14 @@ export function Form_Task1() {
             <div className="task-container">
                 <div className="image-container">
                     <div >
-                    <p style={{fontSize:18}}><b>{data[index].view} View</b></p>
-                    <img
-                        src={data[index].img_url}
-                        alt={`Group ${index} image`}
-                        width={250}
-                        height={250}
-                        className="group_image"
-                    />
+                        <p style={{ fontSize: 18 }}>{data[index].view} View</p>
+                        <img
+                            src={data[index].img_url}
+                            alt={`Group ${index} image`}
+                            width={width}
+                            height={height}
+                            className="group_image"
+                        />
                     </div>
                 </div>
 
@@ -133,14 +142,14 @@ export function Form_Task1() {
                 <form onSubmit={handleSubmit} className='form-container'>
                     <div className="form-group">
                         <label>
-                            <input 
+                            <input
 
                                 type="radio"
                                 name={`group-${index}`}
                                 value="T"
                                 checked={userAnswers[index]?.choice === 'T'}
                                 onChange={(e) => handleChange(e, index)}
-                            /> <p style={{paddingLeft: "10px"}}>True</p>
+                            /> <p style={{ paddingLeft: "10px" }}>True</p>
                         </label>
                     </div>
                     <div className="form-group">
@@ -151,7 +160,7 @@ export function Form_Task1() {
                                 value="F"
                                 checked={userAnswers[index]?.choice === 'F'}
                                 onChange={(e) => handleChange(e, index)}
-                            /> <p style={{paddingLeft: "10px"}}>False</p>
+                            /> <p style={{ paddingLeft: "10px" }}>False</p>
                         </label>
                     </div>
 
@@ -191,13 +200,20 @@ export function Form_Task1() {
                         >
                             Submit
                         </button>
+
+                        <div>
+                            {pressSubmit ?
+                                <Link style={{ backgroundColor: "black", borderRadius: 20, padding: 15, marginBottom: 10 }} to="/task2/instructions">Go to next task</Link>
+                                :
+                                <></>}
+
+                        </div>
+
+
                     </div>
                 </form>
 
-                {pressSubmit ?
-                    <Link style={{ backgroundColor: "black", borderRadius: 20, padding: 15, marginBottom: 10 }} to="/task2/instructions">Go to next task</Link>
-                    :
-                    <></>}
+
             </div>
 
 
@@ -218,6 +234,7 @@ export default function Task1() {
 
     return (
         <>
+            <h2>Task 1</h2>
             <Outlet />
         </>
     )

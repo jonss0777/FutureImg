@@ -127,9 +127,7 @@ main {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
 }
 
-.form-group {
-  margin-bottom: 20px;
-}
+
 
 label {
   font-size: 1rem;
@@ -140,9 +138,10 @@ label {
 
 }
 
+
 .form-select {
   padding: 10px;
-  font-size: 1rem;
+  font-size: rem;
   border: 1px solid #ddd;
   border-radius: 5px;
   background-color: #000000;
@@ -159,6 +158,7 @@ label {
 
 .form-actions {
   display: flex;
+  flex-direction: row;
   justify-content: center;
   margin-top: 20px;
 }
@@ -231,7 +231,8 @@ footer {
 /* Full Screen Adjustments for Large Screens */
 @media (min-width: 1280px) {
   #root {
-    padding: 0rem;
+    padding: 0;
+    border: 0;
   }
 
   .task-container>div {
